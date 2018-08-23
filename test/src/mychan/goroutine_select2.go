@@ -12,8 +12,7 @@ func main() {
 	// without GOMAXPROCS: +- 86000
 	// setting GOMAXPROCS to 2: +- 105000
 	// setting GOMAXPROCS to 3: +- 94000
-
-	runtime.GOMAXPROCS(3)
+	runtime.GOMAXPROCS(2)
 	ch1 := make(chan int)
 	ch2 := make(chan int)
 
@@ -21,18 +20,17 @@ func main() {
 	go pump2(ch2)
 	go suck(ch1, ch2)
 
-	fmt.Println("sleep start")
 	time.Sleep(1e9)
 }
 
 func pump1(ch chan int) {
-	for i := 0; i<=100; i++ {
-		ch <- i * 2
+	for i := 0; ; i++ {
+		ch <- i + 2
 	}
 }
 
 func pump2(ch chan int) {
-	for i := 0; i<=100; i++ {
+	for i := 0; ; i++ {
 		ch <- i + 5
 	}
 }
@@ -47,4 +45,3 @@ func suck(ch1, ch2 chan int) {
 		}
 	}
 }
-
